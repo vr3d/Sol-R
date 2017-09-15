@@ -40,3 +40,5 @@ script:
   - cd build
   - ${DEPS_DIR}/cmake/bin/cmake .. && make
   
+services:
+  - docker
