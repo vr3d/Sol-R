@@ -37,13 +37,9 @@ namespace solr
 {
 const int NB_MAX_FACES = static_cast<int>(NB_MAX_PRIMITIVES * 0.9f); // Max number of faces
 
-OBJReader::OBJReader()
-{
-}
+OBJReader::OBJReader() {}
 
-OBJReader::~OBJReader()
-{
-}
+OBJReader::~OBJReader() {}
 
 vec4f readVertex(const std::string &value)
 {
@@ -190,7 +186,7 @@ unsigned int OBJReader::loadMaterialsFromFile(const std::string &filename,
                     // fabs(m.Kd.y-m.Kd.z)<0.01f) m.reflection=0.5f;
 
                     // Add material to kernel
-                    kernel.setMaterial(m.index, m.Kd.x, m.Kd.y, m.Kd.z, m.noise, m.reflection, m.refraction, false,
+                    kernel.setMaterial(m.index, m.Kd.x, m.Kd.y, m.Kd.z, m.gloss, m.reflection, m.refraction, false,
                                        false, 0, m.transparency, m.opacity, m.diffuseTextureId, m.normalTextureId,
                                        m.bumpTextureId, m.specularTextureId, m.reflectionTextureId,
                                        m.transparencyTextureId, m.ambientOcclusionTextureId, m.Ks.x, 100.f * m.Ks.y,
@@ -216,7 +212,7 @@ unsigned int OBJReader::loadMaterialsFromFile(const std::string &filename,
                 material.ambientOcclusionTextureId = MATERIAL_NONE;
                 materials[id].isSketchupLightMaterial = false;
                 material.opacity = 0.f;
-                material.noise = 0.f;
+                material.gloss = 0.f;
                 materials[id] = material;
                 materials[id].Ks.x = 1.f;
                 materials[id].Ks.y = 500.f;
@@ -306,7 +302,7 @@ unsigned int OBJReader::loadMaterialsFromFile(const std::string &filename,
                 materials[id].reflection = 1.f;
                 materials[id].transparency = 0.5f + (d / 50.f);
                 materials[id].refraction = 1.1f;
-                materials[id].noise = 0.f;
+                materials[id].gloss = 0.f;
             }
 
             if (line.find("SoL_R_Light") != -1)
@@ -347,7 +343,7 @@ unsigned int OBJReader::loadMaterialsFromFile(const std::string &filename,
             // fabs(m.Kd.y-m.Kd.z)<0.01f) m.reflection=0.5f;
 
             // Add material to kernel
-            kernel.setMaterial(m.index, m.Kd.x, m.Kd.y, m.Kd.z, m.noise, m.reflection, m.refraction, false, false, 0,
+            kernel.setMaterial(m.index, m.Kd.x, m.Kd.y, m.Kd.z, m.gloss, m.reflection, m.refraction, false, false, 0,
                                m.transparency, m.opacity, m.diffuseTextureId, m.normalTextureId, m.bumpTextureId,
                                m.specularTextureId, m.reflectionTextureId, m.transparencyTextureId,
                                m.ambientOcclusionTextureId, m.Ks.x, 100.f * m.Ks.y, m.Ks.z, m.illumination,
@@ -391,8 +387,9 @@ void OBJReader::addLightComponent(GPUKernel &kernel, std::vector<vec4f> &solrVer
         lightCenter.x = (aabb.parameters[1].x + aabb.parameters[0].x) / 2.f;
         lightCenter.y = (aabb.parameters[1].y + aabb.parameters[0].y) / 2.f;
         lightCenter.z = (aabb.parameters[1].z + aabb.parameters[0].z) / 2.f;
-        const vec4f L = make_vec4f(aabb.parameters[1].x - aabb.parameters[0].x, aabb.parameters[1].y - aabb.parameters[0].y,
-            aabb.parameters[1].z - aabb.parameters[0].z);
+        const vec4f L =
+            make_vec4f(aabb.parameters[1].x - aabb.parameters[0].x, aabb.parameters[1].y - aabb.parameters[0].y,
+                       aabb.parameters[1].z - aabb.parameters[0].z);
         const float radius = sqrt(L.x * L.x + L.y * L.y + L.z * L.z) / 2.f;
 
         const int nbPrimitives = kernel.addPrimitive(ptSphere);

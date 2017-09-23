@@ -378,16 +378,16 @@ void Scene::createRandomMaterials(bool update, bool lightsOnly)
         int reflectionTextureId = TEXTURE_NONE;
         int transparencyTextureId = TEXTURE_NONE;
         int ambientOcclusionTextureId = TEXTURE_NONE;
-        vec4f innerIllumination = make_vec4f(0.f, m_gpuKernel->getSceneInfo().viewDistance * 10,
-            m_gpuKernel->getSceneInfo().viewDistance);
+        vec4f innerIllumination =
+            make_vec4f(0.f, m_gpuKernel->getSceneInfo().viewDistance * 10, m_gpuKernel->getSceneInfo().viewDistance);
         bool procedural = false;
         bool wireframe = false;
         int wireframeDepth = 0;
-        float r, g, b, noise;
+        float r, g, b, gloss;
         r = 0.2f + rand() % 600 / 1000.f;
         g = 0.2f + rand() % 600 / 1000.f;
         b = 0.2f + rand() % 600 / 1000.f;
-        noise = 0.f;
+        gloss = 0.f;
         float opacity = 0.f;
 
         switch (i)
@@ -426,14 +426,12 @@ void Scene::createRandomMaterials(bool update, bool lightsOnly)
             r = 0.5f;
             g = 0.5f;
             b = 0.5f;
-            noise = 0.f;
             reflection = 0.f;
             break;
         case 1099:
             r = 0.5f;
             g = 0.5f;
             b = 0.5f;
-            noise = 0.f;
             reflection = 0.1f;
             break;
 
@@ -446,7 +444,8 @@ void Scene::createRandomMaterials(bool update, bool lightsOnly)
             reflection = 0.25f;
             transparency = 0.f;
             refraction = 0.f;
-            r = g = b = 0.5f;
+            r = g = b = 0.25f;
+            gloss = 0.25f;
         }
         break;
 
@@ -701,7 +700,7 @@ void Scene::createRandomMaterials(bool update, bool lightsOnly)
         else
             m_nbMaterials = m_gpuKernel->addMaterial();
 
-        m_gpuKernel->setMaterial(m_nbMaterials, r, g, b, noise, reflection, refraction, procedural, wireframe,
+        m_gpuKernel->setMaterial(m_nbMaterials, r, g, b, gloss, reflection, refraction, procedural, wireframe,
                                  wireframeDepth, transparency, opacity, diffuseTextureId, normalTextureId,
                                  bumpTextureId, specularTextureId, reflectionTextureId, transparencyTextureId,
                                  ambientOcclusionTextureId, specular.x, specular.y, specular.w, innerIllumination.x,
@@ -747,7 +746,7 @@ void Scene::createMoleculeMaterials(bool update)
         int transparencyTextureId = TEXTURE_NONE;
         int ambientOcclusionTextureId = TEXTURE_NONE;
         float r, g, b;
-        float noise = 0.f;
+        float gloss = 0.f;
         bool procedural = false;
 
         r = 0.5f + rand() % 40 / 100.f;
@@ -809,7 +808,7 @@ void Scene::createMoleculeMaterials(bool update)
             break; // V
         }
         m_nbMaterials = m_gpuKernel->addMaterial();
-        m_gpuKernel->setMaterial(m_nbMaterials, r, g, b, noise, reflection, refraction, procedural, false, 0,
+        m_gpuKernel->setMaterial(m_nbMaterials, r, g, b, gloss, reflection, refraction, procedural, false, 0,
                                  transparency, opacity, diffuseTextureId, normalTextureId, bumpTextureId,
                                  specularTextureId, reflectionTextureId, transparencyTextureId,
                                  ambientOcclusionTextureId, specular.x, specular.y, specular.w, innerIllumination.x,
@@ -1392,9 +1391,7 @@ void Scene::createDog(const vec3f &center, int material, float size, int boxid)
                               material);
 }
 
-void Scene::renderText()
-{
-}
+void Scene::renderText() {}
 
 SceneInfo &Scene::getSceneInfo()
 {
@@ -1471,7 +1468,7 @@ void Scene::animateSkeleton()
                                           m_skeletonThickness * 2.0f, 41, // Head size and material
                                           m_skeletonThickness * 1.5f, 42, // Hands size and material
                                           m_skeletonThickness * 1.8f, 43  // Feet size and material
-                                          );
+    );
     m_gpuKernel->getSceneInfo().pathTracingIteration = 0;
 
     if (hr == S_OK)

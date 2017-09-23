@@ -141,14 +141,14 @@ void createRandomMaterials(bool update, bool lightsOnly)
         bool procedural = false;
         bool wireframe = false;
         int wireframeDepth = 0;
-        float r, g, b, noise;
+        float r, g, b, gloss;
         float opacity = gSceneInfo.viewDistance;
         bool fastTransparency = false;
 
         r = 0.5f + (rand() % 255) / 512.f;
         g = 0.5f + (rand() % 255) / 512.f;
         b = 0.5f + (rand() % 255) / 512.f;
-        noise = 0.f;
+        gloss = 0.f;
 
         // if( i>0 && i<100 )
         {
@@ -169,7 +169,7 @@ void createRandomMaterials(bool update, bool lightsOnly)
         }
 
         int material = update ? i : SingletonKernel::kernel()->addMaterial();
-        SingletonKernel::kernel()->setMaterial(material, r, g, b, noise, reflection, refraction, procedural, wireframe,
+        SingletonKernel::kernel()->setMaterial(material, r, g, b, gloss, reflection, refraction, procedural, wireframe,
                                                wireframeDepth, transparency, opacity, textureId, TEXTURE_NONE,
                                                TEXTURE_NONE, TEXTURE_NONE, TEXTURE_NONE, TEXTURE_NONE, TEXTURE_NONE,
                                                specular.x, specular.y, specular.w, innerIllumination.x,
@@ -561,33 +561,19 @@ void glFlush()
 void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height,
                      GLenum format, GLenum type, const GLvoid *data);
 
-void glPushAttrib(GLbitfield mask)
-{
-}
+void glPushAttrib(GLbitfield mask) {}
 
-void glPopAttrib()
-{
-}
+void glPopAttrib() {}
 
-void glTexParameteri(GLenum target, GLenum pname, GLint param)
-{
-}
+void glTexParameteri(GLenum target, GLenum pname, GLint param) {}
 
-void glBlendFunc(GLenum sfactor, GLenum dfactor)
-{
-}
+void glBlendFunc(GLenum sfactor, GLenum dfactor) {}
 
-void glMatrixMode(GLenum mode)
-{
-}
+void glMatrixMode(GLenum mode) {}
 
-void glPushMatrix()
-{
-}
+void glPushMatrix() {}
 
-void glPopMatrix()
-{
-}
+void glPopMatrix() {}
 
 GLenum glGetError()
 {

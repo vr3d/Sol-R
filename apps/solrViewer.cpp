@@ -191,7 +191,6 @@ float gSpecValue = 1.f;
 float gSpecPower = 100.f;
 float gSpecCoef = 1.f;
 float gInnerIllumination = 0.f;
-bool gNoise(false);
 
 // OpenGL
 int gTimebase(0);
@@ -389,7 +388,7 @@ void display()
             text << "\n"
                  << gKernel->getNbActivePrimitives() << " triangles, " << si.size.x << "x" << si.size.y << ", "
                  << si.maxPathTracingIterations << " samples/pixel";
-            RenderString(-0.95f, -0.8f, 0.f, GLUT_BITMAP_HELVETICA_10, text.str().c_str(), make_vec4f(1.f,1.f,1.f));
+            RenderString(-0.95f, -0.8f, 0.f, GLUT_BITMAP_HELVETICA_10, text.str().c_str(), make_vec4f(1.f, 1.f, 1.f));
             gScene->renderText();
 #endif
 
@@ -427,7 +426,7 @@ void display()
             // Copyright
             const char *copyright = "http://cudaopencl.blogspot.com";
             float p = strlen(copyright) * 20.f / si.size.x;
-            RenderString(-p / 2.f, -0.9f, 0.f, GLUT_BITMAP_HELVETICA_18, copyright, make_vec4f(1.f,1.f,1.f));
+            RenderString(-p / 2.f, -0.9f, 0.f, GLUT_BITMAP_HELVETICA_18, copyright, make_vec4f(1.f, 1.f, 1.f));
             gScene->renderText();
         }
 
@@ -541,7 +540,8 @@ void keyboard(unsigned char key, int x, int y)
     }
     case 'b':
     {
-        gScene->getSceneInfo().backgroundColor = make_vec4f(rand() % 255 / 255.f, rand() % 255 / 255.f, rand() % 255 / 255.f, 0.5f);
+        gScene->getSceneInfo().backgroundColor =
+            make_vec4f(rand() % 255 / 255.f, rand() % 255 / 255.f, rand() % 255 / 255.f, 0.5f);
         break;
     }
     case 'D':

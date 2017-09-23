@@ -145,8 +145,8 @@ void SolR_SetCamera(double eye_x, double eye_y, double eye_z, double dir_x, doub
     LOG_INFO(3, "SolR_SetCamera");
     const vec3f eye = make_vec3f(static_cast<float>(eye_x), static_cast<float>(eye_y), static_cast<float>(eye_z));
     const vec3f dir = make_vec3f(static_cast<float>(dir_x), static_cast<float>(dir_y), static_cast<float>(dir_z));
-    const vec4f angles = make_vec4f(static_cast<float>(angle_x), static_cast<float>(angle_y), static_cast<float>(angle_z),
-        6400.f);
+    const vec4f angles =
+        make_vec4f(static_cast<float>(angle_x), static_cast<float>(angle_y), static_cast<float>(angle_z), 6400.f);
     solr::SingletonKernel::kernel()->setCamera(eye, dir, angles);
 }
 
@@ -232,10 +232,10 @@ int SolR_GetPrimitiveCenter(int index, double &x, double &y, double &z)
 int SolR_RotatePrimitive(int index, double rx, double ry, double rz, double ax, double ay, double az)
 {
     LOG_INFO(3, "SolR_RotatePrimitive");
-//    vec4f rotationCenter = {{static_cast<float>(rx), static_cast<float>(ry), static_cast<float>(rz), 0.f}};
-//    vec4f angles = {{static_cast<float>(ax), static_cast<float>(ay), static_cast<float>(az), 0.f}};
-//
-//    solr::SingletonKernel::kernel()->rotatePrimitive( index, boxId, rotationCenter, angles ); // TODO!!
+    //    vec4f rotationCenter = {{static_cast<float>(rx), static_cast<float>(ry), static_cast<float>(rz), 0.f}};
+    //    vec4f angles = {{static_cast<float>(ax), static_cast<float>(ay), static_cast<float>(az), 0.f}};
+    //
+    //    solr::SingletonKernel::kernel()->rotatePrimitive( index, boxId, rotationCenter, angles ); // TODO!!
     return 0;
 }
 
@@ -280,8 +280,8 @@ int SolR_SetPrimitiveNormals(int index, double n0_x, double n0_y, double n0_z, d
     return 0;
 }
 
-int SolR_SetPrimitiveTextureCoordinates(int index, double t0_x, double t0_y, double t1_x, double t1_y,
-                                        double t2_x, double t2_y)
+int SolR_SetPrimitiveTextureCoordinates(int index, double t0_x, double t0_y, double t1_x, double t1_y, double t2_x,
+                                        double t2_y)
 {
     LOG_INFO(3, "SolR_SetPrimitiveTextureCoordinates");
     const vec2f t0 = make_vec2f(static_cast<float>(t0_x), static_cast<float>(t0_y));
@@ -386,7 +386,7 @@ int SolR_AddMaterial()
 }
 
 // --------------------------------------------------------------------------------
-int SolR_SetMaterial(int index, double color_r, double color_g, double color_b, double noise, double reflection,
+int SolR_SetMaterial(int index, double color_r, double color_g, double color_b, double gloss, double reflection,
                      double refraction, int procedural, int wireframe, int wireframeDepth, double transparency,
                      double opacity, int diffuseTextureId, int normalTextureId, int bumpTextureId,
                      int specularTextureId, int reflectionTextureId, int transparencyTextureId,
@@ -396,7 +396,7 @@ int SolR_SetMaterial(int index, double color_r, double color_g, double color_b, 
 {
     LOG_INFO(3, "SolR_SetMaterial (" << index << "," << static_cast<float>(color_r) << ","
                                      << static_cast<float>(color_g) << "," << static_cast<float>(color_b) << ","
-                                     << static_cast<float>(noise) << "," << static_cast<float>(reflection) << ","
+                                     << static_cast<float>(gloss) << "," << static_cast<float>(reflection) << ","
                                      << static_cast<float>(refraction) << "," << procedural << "," << wireframe << ","
                                      << static_cast<int>(wireframeDepth) << "," << static_cast<float>(transparency)
                                      << "," << static_cast<float>(opacity) << "," << static_cast<int>(diffuseTextureId)
@@ -412,7 +412,7 @@ int SolR_SetMaterial(int index, double color_r, double color_g, double color_b, 
 
     solr::SingletonKernel::kernel()->setMaterial(
         index, static_cast<float>(color_r), static_cast<float>(color_g), static_cast<float>(color_b),
-        static_cast<float>(noise), static_cast<float>(reflection), static_cast<float>(refraction), (procedural == 1),
+        static_cast<float>(gloss), static_cast<float>(reflection), static_cast<float>(refraction), (procedural == 1),
         (wireframe == 1), static_cast<int>(wireframeDepth), static_cast<float>(transparency),
         static_cast<float>(opacity), static_cast<int>(diffuseTextureId), static_cast<int>(normalTextureId),
         static_cast<int>(bumpTextureId), static_cast<int>(specularTextureId), static_cast<int>(reflectionTextureId),
@@ -424,7 +424,7 @@ int SolR_SetMaterial(int index, double color_r, double color_g, double color_b, 
 }
 
 // --------------------------------------------------------------------------------
-int SolR_GetMaterial(int in_index, double &out_color_r, double &out_color_g, double &out_color_b, double &out_noise,
+int SolR_GetMaterial(int in_index, double &out_color_r, double &out_color_g, double &out_color_b, double &out_gloss,
                      double &out_reflection, double &out_refraction, int &out_procedural, int &out_wireframe,
                      int &out_wireframeDepth, double &out_transparency, double &out_opacity, int &out_diffuseTextureId,
                      int &out_normalTextureId, int &out_bumpTextureId, int &out_specularTextureId,
@@ -433,7 +433,7 @@ int SolR_GetMaterial(int in_index, double &out_color_r, double &out_color_g, dou
                      double &out_illuminationDiffusion, double &out_illuminationPropagation, int &out_fastTransparency)
 {
     LOG_INFO(3, "SolR_GetMaterial");
-    float color_r, color_g, color_b, noise, reflection, refraction, transparency, opacity;
+    float color_r, color_g, color_b, gloss, reflection, refraction, transparency, opacity;
     float specValue, specPower, specCoef, innerIllumination, illuminationDiffusion, illuminationPropagation;
     bool procedural;
     bool wireframe;
@@ -443,7 +443,7 @@ int SolR_GetMaterial(int in_index, double &out_color_r, double &out_color_g, dou
     bool fastTransparency;
 
     int returnValue = solr::SingletonKernel::kernel()->getMaterialAttributes(
-        in_index, color_r, color_g, color_b, noise, reflection, refraction, procedural, wireframe, wireframeDepth,
+        in_index, color_r, color_g, color_b, gloss, reflection, refraction, procedural, wireframe, wireframeDepth,
         transparency, opacity, diffuseTextureId, normalTextureId, bumpTextureId, specularTextureId, reflectionTextureId,
         transparencyTextureId, ambientOcclusionTextureId, specValue, specPower, specCoef, innerIllumination,
         illuminationDiffusion, illuminationPropagation, fastTransparency);
@@ -451,7 +451,7 @@ int SolR_GetMaterial(int in_index, double &out_color_r, double &out_color_g, dou
     out_color_r = static_cast<double>(color_r);
     out_color_g = static_cast<double>(color_g);
     out_color_b = static_cast<double>(color_b);
-    out_noise = static_cast<double>(noise);
+    out_gloss = static_cast<double>(gloss);
     out_reflection = static_cast<double>(reflection);
     out_refraction = static_cast<double>(refraction);
     out_transparency = static_cast<double>(transparency);
@@ -486,8 +486,8 @@ int SolR_LoadMolecule(char *filename, int geometryType, double defaultAtomSize, 
     const float s(static_cast<float>(scale));
     const vec4f objectScale = make_vec4f(s, s, s);
     prbReader.loadAtomsFromFile(filename, *solr::SingletonKernel::kernel(),
-                                    static_cast<solr::GeometryType>(geometryType), static_cast<float>(defaultAtomSize),
-                                    static_cast<float>(defaultStickSize), atomMaterialType, objectScale);
+                                static_cast<solr::GeometryType>(geometryType), static_cast<float>(defaultAtomSize),
+                                static_cast<float>(defaultStickSize), atomMaterialType, objectScale);
     return solr::SingletonKernel::kernel()->getNbActivePrimitives();
 }
 

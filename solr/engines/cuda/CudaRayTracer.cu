@@ -253,7 +253,7 @@ __device__ __INLINE__ float4 launchRayTracing(const int& index, BoundingBox* bou
             rayOrigin.origin = closestIntersection + reflectedTarget * sceneInfo.rayEpsilon;
             rayOrigin.direction = closestIntersection + reflectedTarget;
 
-            // Noise management
+            // Gloss management
             if (sceneInfo.pathTracingIteration != 0 &&
                 materials[primitives[closestPrimitive].materialId].color.w != 0.f)
             {

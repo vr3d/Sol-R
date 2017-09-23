@@ -138,7 +138,7 @@ public:
     void setPrimitiveCenter(unsigned int index, const vec3f &center);
 
     // Texture coordinates
-    void setPrimitiveTextureCoordinates(const unsigned int index, const vec2f& vt0, const vec2f& vt1, const vec2f& vt2);
+    void setPrimitiveTextureCoordinates(const unsigned int index, const vec2f &vt0, const vec2f &vt1, const vec2f &vt2);
 
     // Normals
     void setPrimitiveNormals(unsigned int index, vec3f n0, vec3f n1, vec3f n2);
@@ -167,7 +167,7 @@ public:
     // ---------- Materials ----------
     int addMaterial();
     void setMaterial(unsigned int index, const Material &material);
-    void setMaterial(unsigned int index, float r, float g, float b, float noise, float reflection, float refraction,
+    void setMaterial(unsigned int index, float r, float g, float b, float gloss, float reflection, float refraction,
                      bool procedural, bool wireframe, int wireframeWidth, float transparency, float opacity,
                      int diffuseTextureId, int normalTextureId, int bumpTextureId, int specularTextureId,
                      int reflectionTextureId, int transparentTextureId, int ambientOcclusionTextureId, float specValue,
@@ -177,7 +177,7 @@ public:
     void setMaterialColor(unsigned int index, float r, float g, float b);
     void setMaterialTextureId(unsigned int textureId);
 
-    int getMaterialAttributes(int index, float &r, float &g, float &b, float &noise, float &reflection,
+    int getMaterialAttributes(int index, float &r, float &g, float &b, float &gloss, float &reflection,
                               float &refraction, bool &procedural, bool &wireframe, int &wireframeDepth,
                               float &transparency, float &opacity, int &diffuseTextureId, int &normalTextureId,
                               int &bumpTextureId, int &specularTextureId, int &reflectionTextureId,
@@ -348,7 +348,7 @@ protected:
     size_t m_maxPrimitivesPerBox;
     bool m_doneWithAdding;
     int m_addingIndex;
-    
+
     // Camersa position
     vec3f m_viewPos;
     vec3f m_viewDir;

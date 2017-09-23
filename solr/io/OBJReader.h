@@ -37,7 +37,7 @@ struct MaterialMTL
     float transparency;
     float opacity;
     float refraction;
-    float noise;
+    float gloss;
     int diffuseTextureId;
     int normalTextureId;
     int bumpTextureId;
@@ -59,9 +59,9 @@ public:
                                        GPUKernel &GPUKernel, int materialId);
 
     vec4f loadModelFromFile(const std::string &filename, GPUKernel &cudaKernel, const vec4f &center,
-                             const bool autoScale, const vec4f &scale, bool loadMaterials, int materialId,
-                             bool allSpheres, bool autoCenter, CPUBoundingBox &aabb, const bool &checkInAABB,
-                             const CPUBoundingBox &inAABB);
+                            const bool autoScale, const vec4f &scale, bool loadMaterials, int materialId,
+                            bool allSpheres, bool autoCenter, CPUBoundingBox &aabb, const bool &checkInAABB,
+                            const CPUBoundingBox &inAABB);
 
 private:
     void addLightComponent(GPUKernel &kernel, std::vector<vec4f> &solrVertices, const vec4f &center,

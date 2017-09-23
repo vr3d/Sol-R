@@ -108,9 +108,7 @@ namespace solr
 {
 GPUKernel *SingletonKernel::m_kernel = 0;
 
-SingletonKernel::SingletonKernel()
-{
-}
+SingletonKernel::SingletonKernel() {}
 
 GPUKernel *SingletonKernel::kernel()
 {
@@ -701,7 +699,8 @@ void GPUKernel::setPrimitiveBellongsToModel(const int &index, bool bellongsToMod
     }
 }
 
-void GPUKernel::setPrimitiveTextureCoordinates(const unsigned int index, const vec2f& vt0, const vec2f& vt1, const vec2f& vt2)
+void GPUKernel::setPrimitiveTextureCoordinates(const unsigned int index, const vec2f &vt0, const vec2f &vt1,
+                                               const vec2f &vt2)
 {
     if (index < m_primitives[m_frame].size())
     {
@@ -1777,7 +1776,7 @@ void GPUKernel::setMaterial(unsigned int index, const Material &material)
     }
 }
 
-void GPUKernel::setMaterial(unsigned int index, float r, float g, float b, float noise, float reflection,
+void GPUKernel::setMaterial(unsigned int index, float r, float g, float b, float gloss, float reflection,
                             float refraction, bool procedural, bool wireframe, int wireframeWidth, float transparency,
                             float opacity, int diffuseTextureId, int normalTextureId, int bumpTextureId,
                             int specularTextureId, int reflectionTextureId, int transparentTextureId,
@@ -1787,7 +1786,7 @@ void GPUKernel::setMaterial(unsigned int index, float r, float g, float b, float
 {
     LOG_INFO(3, "GPUKernel::setMaterial ("
                     << index << "," << static_cast<float>(r) << "," << static_cast<float>(g) << ","
-                    << static_cast<float>(b) << "," << static_cast<float>(noise) << ","
+                    << static_cast<float>(b) << "," << static_cast<float>(gloss) << ","
                     << static_cast<float>(reflection) << "," << static_cast<float>(refraction) << "," << procedural
                     << "," << wireframe << "," << static_cast<int>(wireframeWidth) << ","
                     << static_cast<float>(transparency) << "," << static_cast<float>(opacity) << ","
@@ -1804,7 +1803,7 @@ void GPUKernel::setMaterial(unsigned int index, float r, float g, float b, float
         m_hMaterials[index].color.x = r;
         m_hMaterials[index].color.y = g;
         m_hMaterials[index].color.z = b;
-        m_hMaterials[index].color.w = 0.f; // noise;
+        m_hMaterials[index].color.w = gloss / 100.f;
         m_hMaterials[index].specular.x = specValue;
         m_hMaterials[index].specular.y = specPower;
         m_hMaterials[index].specular.z = 0.f; // Not used
@@ -1812,7 +1811,7 @@ void GPUKernel::setMaterial(unsigned int index, float r, float g, float b, float
         m_hMaterials[index].innerIllumination.x = innerIllumination;
         m_hMaterials[index].innerIllumination.y = illuminationDiffusion;
         m_hMaterials[index].innerIllumination.z = illuminationPropagation;
-        m_hMaterials[index].innerIllumination.w = noise;
+        m_hMaterials[index].innerIllumination.w = 0.f; // noise;
         m_hMaterials[index].reflection = reflection;
         m_hMaterials[index].refraction = refraction;
         m_hMaterials[index].transparency = transparency;
@@ -1952,7 +1951,7 @@ void GPUKernel::setMaterialTextureId(unsigned int textureId)
     }
 }
 
-int GPUKernel::getMaterialAttributes(int index, float &r, float &g, float &b, float &noise, float &reflection,
+int GPUKernel::getMaterialAttributes(int index, float &r, float &g, float &b, float &gloss, float &reflection,
                                      float &refraction, bool &procedural, bool &wireframe, int &wireframeDepth,
                                      float &transparency, float &opacity, int &diffuseTextureId, int &normalTextureId,
                                      int &bumpTextureId, int &specularTextureId, int &reflectionTextureId,
@@ -1968,6 +1967,7 @@ int GPUKernel::getMaterialAttributes(int index, float &r, float &g, float &b, fl
         r = m_hMaterials[index].color.x;
         g = m_hMaterials[index].color.y;
         b = m_hMaterials[index].color.z;
+        gloss = m_hMaterials[index].color.w;
 
         reflection = m_hMaterials[index].reflection;
         refraction = m_hMaterials[index].refraction;
@@ -1988,7 +1988,6 @@ int GPUKernel::getMaterialAttributes(int index, float &r, float &g, float &b, fl
         innerIllumination = m_hMaterials[index].innerIllumination.x;
         illuminationDiffusion = m_hMaterials[index].innerIllumination.y;
         illuminationPropagation = m_hMaterials[index].innerIllumination.z;
-        noise = m_hMaterials[index].innerIllumination.w;
         fastTransparency = (m_hMaterials[index].attributes.x == 1);
         procedural = (m_hMaterials[index].attributes.y == 1);
         wireframe = (m_hMaterials[index].attributes.z == 1);
@@ -2448,7 +2447,7 @@ void GPUKernel::saveBitmapToFile(const std::string &filename, BitmapBuffer *bitm
 
     unsigned char bmpfileheader[14] = {'B', 'M', 0, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0};
     unsigned char bmpinfoheader[40] = {40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 32, 0};
-    
+
     int w = width;
     int h = height;
     int filesize = 54 + depth * w * h;
@@ -2621,7 +2620,7 @@ int GPUKernel::setGLMode(const int &glMode)
 
 void GPUKernel::addVertex(float x, float y, float z)
 {
-    m_vertices.push_back(make_vec3f(x,y,z));
+    m_vertices.push_back(make_vec3f(x, y, z));
 }
 
 void GPUKernel::addNormal(float x, float y, float z)

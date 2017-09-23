@@ -96,13 +96,12 @@ extern "C" SOLR_API int SolR_GetPrimitiveMaterial(int index);
 extern "C" SOLR_API int SolR_SetPrimitiveNormals(int index, double n0_x, double n0_y, double n0_z, double n1_x,
                                                  double n1_y, double n1_z, double n2_x, double n2_y, double n2_z);
 
-extern "C" SOLR_API int SolR_SetPrimitiveTextureCoordinates(int index, double t0_x, double t0_y, 
-                                                            double t1_x, double t1_y, double t2_x,
-                                                            double t2_y);
+extern "C" SOLR_API int SolR_SetPrimitiveTextureCoordinates(int index, double t0_x, double t0_y, double t1_x,
+                                                            double t1_y, double t2_x, double t2_y);
 
 // ---------- Materials ----------
 extern "C" SOLR_API int SolR_AddMaterial();
-extern "C" SOLR_API int SolR_SetMaterial(int index, double color_r, double color_g, double color_b, double noise,
+extern "C" SOLR_API int SolR_SetMaterial(int index, double color_r, double color_g, double color_b, double gloss,
                                          double reflection, double refraction, int procedural, int wireframe,
                                          int wireframeDepth, double transparency, double opacity, int diffuseTextureId,
                                          int normalTextureId, int bumpTextureId, int specularTextureId,
@@ -111,7 +110,7 @@ extern "C" SOLR_API int SolR_SetMaterial(int index, double color_r, double color
                                          double specCoef, double innerIllumination, double illuminationDiffusion,
                                          double illuminationPropagation, int fastTransparency);
 
-extern "C" SOLR_API int SolR_GetMaterial(int index, double &color_r, double &color_g, double &color_b, double &noise,
+extern "C" SOLR_API int SolR_GetMaterial(int index, double &color_r, double &color_g, double &color_b, double &gloss,
                                          double &reflection, double &refraction, int &procedural, int &wireframe,
                                          int &wireframeDepth, double &transparency, double &opacity,
                                          int &diffuseTextureId, int &bumpTextureId, int &normalTextureId,
