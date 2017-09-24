@@ -445,7 +445,7 @@ void Scene::createRandomMaterials(bool update, bool lightsOnly)
             transparency = 0.f;
             refraction = 0.f;
             r = g = b = 0.25f;
-            gloss = 0.25f;
+            gloss = 0.2f;
         }
         break;
 
